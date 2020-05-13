@@ -1,0 +1,17 @@
+You have been given a binary named target. We are not telling you
+what this does, nor what arguments it takes. Your task is to get
+this program to generate an Illegal Instruction. That is, your input
+should cause the program to attempt to execute something that is
+within the program's address space, but that is not a valid x86_64
+opcode.
+
+Your command-line arguments should be in a file named args. We will
+invoke the program as
+
+    ./target $(cat args)
+
+Since the program's behavior might not be deterministic, due to
+ASLR, we will run it 30 times with your arguments. Only one of those
+runs needs to produce an error, but you should be able to generate
+an Illegal Instruction with reasonably high probability.
+

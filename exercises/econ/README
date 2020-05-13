@@ -1,0 +1,62 @@
+Task 1: Fast-Flux DNS
+
+  Here are some domain names culled from spam I've received:
+
+     1l60s0m1jm1par.w1.knynjh.ml
+     k361lijbn104r0.w0.bgpeyq.cf
+     dz61vc0f1120at.w1.aumhze.ga
+
+  Use the "dig" program to retrieve their DNS records. The most
+  relevant pieces of the output for our purposes will be the QUESTION
+  and ANSWER sections. The ANSWER section will look something like
+
+    ;; ANSWER SECTION:
+    <host name> <TTL> IN <record type> <value>
+
+  A record of type "A" gives an address binding, so <value> will
+  be an IP address.  The TTL is the number of seconds until this
+  record is no longer valid, and a fresh request will need to be
+  made.  The AUTHORITY and ADDITIONAL sections have nameserver
+  information, also with TTLs. Some of these will be additional A
+  records, but many (especially in AUTHORITY) will be NS records,
+  which provide hostnames that provide authoritative records for
+  <host name>.
+
+  Compare these to responses for
+
+     www.google.com
+     gizmonic.cs.umd.edu
+
+  There's another utility, called "whois", that retrieves domain
+  name registration information. Try running whois on some of the
+  domains, like "knynjh.ml", "bgpeyq.cf", and "google.com". How
+  do these differ? Where are these domains registered? What can you
+  figure out about the geographical distribution of the services
+  being used?
+
+  DO NOT VISIT ANY OF THESE SITES! There may or may not be malware,
+  but they *are* shady, and do not deserve any network traffic that
+  appears to boost their profile or credibility.
+
+Task 2: Reverse lookups
+    
+  Both dig (with the "-x" flag) and whois take IP addresses, as
+  well.  These are reverse lookups, and you might expect that if
+
+     dig <hostname>
+
+  return <addr>, that
+
+     dig -x <addr>
+
+  would return <hostname>. Is that what happens for these addresses?
+  If not, why might that be the case?
+
+  For whois, the reverse lookup tells you
+
+   a) What subnet it's a member of, and
+   b) Who owns that subnet
+
+  Compare "whois <domain>" and "whois <addr>".  What does this tell
+  you?
+

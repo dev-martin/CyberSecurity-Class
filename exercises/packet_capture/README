@@ -1,0 +1,67 @@
+Wireshark is a great tool for observing what's happening on the
+network.  Sometimes, however, you want to use a command-line tool.
+This might be when observing something remotely, through ssh, or
+it might be when creating monitoring scripts. Alternatively, you
+might just prefer a terminal-based interface.
+
+On Linux and BSD-based systems, there's a library called libpcap
+that typically does packet capture and insertion. Wireshark uses
+this, as does the older tcpdump utility. The wireshark package also
+provides some command-line tools: tshark (a terminal-based equivalent
+to wireshark) and dumpcap (purely the packet capturing part). It's
+good to familiarize yourself with these.
+
+We're going to use tcpdump for this exercise, which uses Berkeley
+Packet Filters (BPFs) to select packets for capture. Try the
+following:
+
+    sudo tcpdump -i any
+
+We're using sudo to run this as root, since packet capture is a
+privileged (root-only) operation. If you're running this on your
+laptop or desktop, you'll notice a lot of traffic going by. On your
+VM, you'll probably have to surf the web a bit to get much traffic.
+We can use BPF to reduce the amount of traffic we see. For example:
+
+    sudo tcpdump -i any udp
+
+This will only capture UDP (IP protocol 17) traffic. You can also
+capture based on hostname:
+
+    sudo tcpdump -i any host www.google.com
+
+or port:
+
+    sudo tcpdump -i any port 443
+
+These have been bidirectional filters, but you can also filter based
+on source or destination:
+
+    sudo tcpdump -i any src port 443
+
+We're using "-i any" to capture on any interface. You can make this
+more specific, as well:
+
+    sudo tcpdump -i lo
+
+This will capture all traffic on the VM's loopback (local) interface.
+This interface might have a different name if you're not running
+in the VM. Try lo0 if lo doesn't work.
+
+By default, tcpdump will convert port numbers to well-known service
+names, and will do reverse DNS lookups to map IP addresses to
+hostnames. You can suppress this, getting just the numeric output,
+with the "-n" flag:
+
+    sudo tcpdump -i any -n src port 443
+
+With tcpdump, we can also write packets to a file, which can be
+extremely useful for later analysis. Look through the manpages for
+tcpdump and pcap-filter, and do the following in a bash script named
+"capture":
+
+  * capture all DNS traffic
+  * capture all HTTPS traffic where packets are at least 500 bytes
+  * write the packets to the file capture.cap
+  * stop after 20 packets
+

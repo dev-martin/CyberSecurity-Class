@@ -1,0 +1,36 @@
+In this assignment you will be working with a simple database to become
+familiar with basic SQL statements.
+
+1. Pull the lamp image from gizmonic (the VM should already have this):
+     docker pull gizmonic.cs.umd.edu:8080/lamp
+
+2. Start a container with this image, in interactive mode:
+     docker run -v $(pwd):/mnt -ti gizmonic.cs.umd.edu:8080/lamp /bin/bash
+
+3. Fix some weird permissions issues and launch the mysql server:
+     chown -R mysql:mysql /var/lib/mysql* && service mysql start
+
+4. Start the MySQL console UI: "mysql -u root -p" (the password is "root")
+
+5. Run "CREATE DATABASE mysqlsampledatabase;"
+
+6. Run "USE mysqlsampledatabase;"
+
+7. Run "SOURCE /mnt/mysqlsampledatabase.sql;" to import data
+
+8. You can see all the databases on the VM by running "show databases;"
+
+9. See all the tables by running "show tables;"
+
+10. See detailed information about a table: "describe customers;"
+
+11. Find SELECT queries to get the following information from the
+    customers table (use online documentation like W3Schools or the
+    file sql_quick_ref in this repo):
+    - Find the phone number for "Mini Wheels Co." 
+    - Get all the customers in France
+    - Get the names and credit limits of all the customers and sort in
+      ascending order
+    - Get the names of all cities where more than one customer lives
+
+    Store these queries in a file named queries.sql

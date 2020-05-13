@@ -1,0 +1,57 @@
+Exercise 1:
+
+    The openssl program can be used to create a simple Certification
+    Authority. This can be incredibly useful when designing your
+    own PKI-enabled system, especially during the development phase
+    or when you want to control the authentication mechanism yourself.
+
+    You will be making extensive use of the man pages for openssl.
+    It is very useful to become accustomed to finding information
+    in these, since they will often be your only reliable documentation
+    for a tool.
+    
+    Many references you find online will have you create a CA directory
+    structure, but you can actually do it more easily, with just a couple
+    of files!  We'll walk you through some of the preliminaries, using the
+    script ca.sh, and leave the last parts for you.
+
+    To start with, take a look at ca.sh and ca.cnf.  The pre-generated code
+    creates a root CA certificate and a delegate CA certificate. What's left
+    for you to do is to create a server certificate and a user certificate.
+    Both of these should have the ability to sign new certificates disabled.
+    The server certificate should have server authentication enabled, and the
+    user certificate should have client authentication enabled.
+
+    Use "openssl x509", "openssl rsa", and other commands to look through the
+    files you've generated. Pay particular attention to how command-line options
+    are reflected in the generated files. You will generally need to provide
+    options "-noout" and "-text" when viewing files. You can also look at the
+    raw files, which are in an "ASCII-armored" binary format.
+
+Exercise 2:
+
+    The Diffie-Hellman exercise introduced you to basic (and simplified)
+    cryptographic operations in python. In this exercise, along with the at-home
+    exercise, you will use a very simple symmetric-key cipher and a basic
+    implementation of RSA, both of which you will write yourself. Note that
+    these will not be especially secure. We have not provided skeleton code
+    for this, since you have plenty of examples at this point.
+
+    The first step is to create an RSA key pair for Bob. Alice will
+    receive the public key. Make sure you choose p and q large
+    enough that n supports values of at least 1 byte. Don't make
+    it too much longer, because you're going to have to determine
+    the private exponent d. This will be used to encrypt a symmetric
+    key.
+
+    Once you have p, q, n, and e (use 3), you can compute
+
+       phi=(p-1)(q-1)
+
+    From this, you need to find d such that
+
+       e*d mod phi = 1
+
+    This might take some manual trial-and-error, though you should be able to
+    automate it. Make use of code from previous exercises to speed things up
+    here.

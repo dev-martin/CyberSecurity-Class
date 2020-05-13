@@ -1,0 +1,42 @@
+We learned about passwords, and how they tend to be predictable.
+The file passwords has the 25 most common passwords from 2017. You
+will write a program, called crack, which will attempt to crack
+hashed passwords. These passwords will not all be drawn from this
+list, but they *will* all be popular transformations of passwords
+from this list (see Figure 12 in Zhang, et al., with up to 3
+transformations, not including transpositions). Feel free to hard-code
+the contents of the password file into your program. The hashes
+will be performed with md5, which is available on the command line
+as md5sum and in python as hashlib.md5().
+
+To hash a password like "hello", you could run the following from
+the command line:
+  
+    echo -n hello | md5sum | awk '{print $1}'
+
+The "-n" flag tells echo not to include a newline character. We're
+using awk here to only print the hash result, not the filename
+(which will be "-" for stdin). In python, the equivalent would be:
+  
+    import hashlib
+    print(hashlib.md5('hello').hexdigest())
+  
+We will invoke your program as follows:
+  
+    ./crack <hash>
+  
+For example
+  
+    ./crack 5d41402abc4b2a76b9719d911017c592
+  
+Your program should print the following to stdout:
+  
+    Password: <passwd>
+    
+For the above example, this would be:
+  
+    Password: hello
+
+If you are unable to crack the password, you should not print
+anything.  Please avoid infinite loops.
+

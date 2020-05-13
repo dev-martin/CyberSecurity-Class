@@ -1,0 +1,14 @@
+You have been given a simple HTTP server in server.py. This supports
+two skins: light and dark. The former prints black text on a white
+background, while the latter prints white text on a black background.
+
+For this exercise, you must produce the following:
+
+  * A bash script named server.sh that starts the server
+  * A bash script named client.sh that runs your client, including
+    any compilation not done by the Makefile
+
+Your client should use this server to obtain the contents of the file
+/var/secret/token. It should then print this, and *only* this, to the
+terminal before exiting.
+

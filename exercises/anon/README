@@ -1,0 +1,115 @@
+Task 1:
+
+   You've created an implementation of Diffie-Hellman previously.
+   Let's use this to create a simple DC-net. First, you'll need
+   a third participant, and all three (Alice, Bob, and Carol)
+   will need the others' public keys.
+
+   Now, a round of the DC-net is going to involve the following:
+
+    1. pairwise secret key agreement
+
+    2. local computation of a round's output
+
+    3. publishing the round's output
+
+    4. deciphering the output
+
+   The first, you've essentially already done -- you just need to
+   extend it to three participants (they can use the same public
+   key for both neighbors). The second is straightforward -- each
+   participant XORs (a^b in python) their secrets shared with the
+   other participants, and adds in their own message, if relevant.
+
+   Publishing the output (with print) within your program is
+   equivalent to broadcasting it, and the values can then all be
+   XORed to decipher the output.
+
+   You participants should make a random decision whether to publish
+   a message in a round. Keep in mind this message must be no larger
+   than the size of the secret keys. This means your keys should
+   be larger than any expected message.  An easy way to determine
+   probabilistically whether to send a message is to use something
+   like the following (in python):
+
+     import random
+     r = random.Random()
+     p = 0.1 # 10% probability
+     send_msg = r.uniform(0,1) < p
+
+   You could also use r.randint(0,100), if you don't want fractional
+   percentages, or r.uniform(0,100) for floating-point percentages.
+
+   If the probability is too low, you will typically see a 0 as the
+   output.  If it's too high, you'll see garbage frequently, due
+   to collisions. A probability of 1/6 will probably give you
+   reasonably frequent messages with a small number of collisions.
+   You can make this probability a command-line parameter.
+
+   If you manage to finish quickly, or want to continue to explore
+   this on your own, try a repeated execution, with all 4 steps
+   each iteration. Now you can try to detect collisions and implement
+   a random back-off.
+
+Task 2:
+
+   Creating a mixnet would be a lot of work, but you can create some
+   of the pieces.
+
+   Let's start with a mix node's structure: It takes a message,
+   unwraps it, and sends the internal part to the specified recipient.
+   In other words, it takes an array of length 2, one part of which
+   is the next hop and the other is the message for the next hop.
+   Write a simple data structure and function that works with this
+   to forward messages. You can use classes, dicts, lists, or tuples.
+
+   Now, consider a node A that wants to send a message to B through
+   the network. A has to prepare its message by wrapping it for
+   each node of the mix cascade. Write a function that takes in a
+   message and wraps it for the cascade. You can assume the cascade
+   proceeds in a constant and well-known order, possibly as a list of
+   node IDs. Print this to the terminal to verify that you've done it
+   correctly.
+
+   Now run your message through end-to-end. You can have the mix
+   nodes print their results each time. At this point, we're only
+   worried about one sender and one receiver.
+
+   If you finish early, or want to continue to work on this, try
+   adding multiple senders and receivers, with each sending a
+   message. You can also try adding multiple rounds, encryption,
+   random back-off, and any other features of a mixnet.
+
+Task 3:
+
+   You're going to play the role of a would-be anonymous communicant
+   as well as an adversary. Alice wants to construct a circuit
+   through a Tor network. Eve wants to figure out, or at least
+   disrupt, Alice's communications. Eve can control some fraction
+   f of the nodes in the network.
+
+   Eve can disrupt the communications if she can get any one of her
+   nodes in the circuit Alice creates. She can potentially determine
+   Alice's selected destination if she is able to control the exit
+   node. Eve can definitely determine Alice's destination if she
+   is able to control both the entry and exit nodes.
+
+   Write a simple simulation of this, which takes a network size n
+   and compromised fraction f as parameters. Nodes can be represented
+   as just a list of indices. Eve gets assigned some number of Tor
+   nodes equal to n*f (you can apply floor, ceil, or standard
+   rounding as you prefer).  Alice picks nodes from this list at
+   random, such as using random.choice(node_list) or
+   random.sample(node_list, k).  Make sure you don't use the same
+   relay node more than once.
+
+   See how varying n and f impacts Eve's success rate for:
+     - disruption
+     - potential deanonymizing
+     - definite deanonymizing
+
+   If you finish early, or wish to explore this further, add DoS
+   attacks to your simulator. You can remove specific nodes, reject
+   non-Eve nodes probabilistically, or just change n and f to reflect
+   the statistical impact of the DoS attack.
+

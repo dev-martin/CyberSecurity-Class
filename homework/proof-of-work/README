@@ -1,0 +1,45 @@
+Bitcoin uses a partial hash collision as a proof-of-work, but that's
+not the only type of proof-of-work protocol. There are a number of
+others, based on different hard problems. For some of these, the
+work is even useful on its own.
+
+You are going to implement the following proof-of-work systems:
+
+Square roots modulo a prime number
+----------------------------------
+ 
+   Given x and p, find y such that y^2 = x mod p
+   
+   Your program (or script) should be named sqrt, and will be invoked as
+   ./sqrt <x> <p>
+   It should return a line of the form:
+   sqrt(<x>) = <y> (mod <p>)
+   
+   That is, given
+   ./sqrt 6 5
+   your program should print either
+   sqrt(6) = 1 (mod 5)
+   or
+   sqrt(6) = 4 (mod 5)
+
+
+Repeated modular squaring
+-------------------------
+ 
+   Given a, n, and k, compute b = a^e mod n, where e=2^k
+
+   Your program should be named square, and will be invoked as
+   ./square <a> <n> <k>
+   It should return a line of the form:
+   b = <b>
+   
+   That is, given
+   ./square 3 55 7
+   your program should return
+   b = 16
+
+   Note that if you know the factors of n, you can equivalently compute
+   e = 2^k mod phi(n)
+   b = a^e mod n
+   which makes verifying the solution easy.
+

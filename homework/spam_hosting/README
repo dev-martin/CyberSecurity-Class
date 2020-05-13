@@ -1,0 +1,33 @@
+Spam and malware distribution is an international business. This
+exercise asks you to determine where the following domains are
+physically hosted.  Note that, for purposes of stable responses,
+these are not malicious domains, but were chosen to illustrate the
+international nature of online services.
+
+Your response to this exercise will be in the file "locations".
+
+For each of the following domains, provide the country in which the
+corresponding server is located. This should be in the following
+format:
+  
+<domain> <country>
+
+<explanation of how you determined this>
+
+For example:
+
+www.google.com United States of America
+
+I determined this by consulting the oracles, who gathered at midnight
+under a full moon to tell me that this is where this domain is
+hosted.
+
+
+The country must be provided in the form used on the page
+http://www.un.org/en/member-states/
+
+The domains to identify are:
+  
+  brief.ly
+  deja.vu
+

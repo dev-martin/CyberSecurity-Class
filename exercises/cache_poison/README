@@ -1,0 +1,28 @@
+In this exercise, you will play the role of an attacker, attempting
+to poison the cache for a target domain name with your malicious
+IP address.  We have provided code to help you with this in dns.py,
+which you can include in a python script with
+  
+    from dns import *
+  
+Your program or script should be named "poison". It will be invoked
+as follows:
+
+    ./poison <target domain> <spoofed address> <input file> <output file>
+    
+"<target domain>" will be the domain that you are attacking, such
+as "www.google.com.". "<spoofed address>" is the response you want
+to send for this target, such as "1.2.3.4". "<input file>" will be
+a file in pcap format containing packets captured from a network
+interface, which you can read with scapy's rdpcap() function. Your
+spoofed packet should be written to "<output file>" in the same
+format. In python you would do this with scapy's wrpcap() function.
+For a packet p, you can display its information with p.show()
+
+The response should be set as authoritative, so that intermediate
+servers will cache the result. We have provided you with a reference
+sheet for DNS in dns.pdf.  If you are unfamiliar with the DNS format,
+you might want to run wireshark while issuing a request with "host"
+or "dig", so that you can see the details of the request and response
+formats.
+

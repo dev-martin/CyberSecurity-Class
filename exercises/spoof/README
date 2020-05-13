@@ -1,0 +1,224 @@
+We're going to do some packet spoofing!
+
+Before we begin, start wireshark on your VM, capturing eth14 (or
+whatever your ethernet interface is called).
+
+Your VM has scapy, which you can use to construct packets with
+headers of your choosing in python. To create a packet, you'd have
+something like the following in your python script:
+
+from scapy.all import *
+pkt = IP(src='1.2.3.4', dst='2.3.4.5')/ICMP()
+send(pkt)
+
+Your VM also has a program called iptables. This is a firewall that
+comes with Linux, and it can do quite a lot of things.  One of these
+is to rewrite packets, which allows us to act as a NAT (for example).
+
+As you might guess, iptables is organized into *tables*. One of
+these is the "nat" table. It has a chain (a grouping of rules)
+called "POSTROUTING", against which packets are checked after their
+outgoing interface is selected.
+
+Here's how we see the current state of a table:
+
+    sudo iptables -t nat --list -v
+
+This says to perform an operation on the "nat" table, and that
+operation is to list the current chains (and their rules). The "-v"
+flag will print verbose information, including rule numbers. This
+will be helpful later.
+
+Try running this, and seeing what's there. It's probably empty.
+
+
+Another tool we'll use is "nc", which gives us a dumb client (or server),
+and is useful for trying out new protocols, or just messing around with
+stuff. Try the following:
+
+    nc 128.8.130.3 12
+
+Now just type some garbage, and hit Ctrl-C. This is the IP address
+for gizmonic, in case you were wondering, and the 12 refers to the
+TCP port we're going to try (and fail) to connect to. In wireshark,
+put the following as a filter to make life easier:
+
+    ip.dst==128.8.130.3
+
+Now you'll only see traffic destined for gizmonic.
+
+
+Back to iptables...
+
+Here's how we write a table entry:
+
+    sudo iptables -t nat -A POSTROUTING <rule-spec>
+
+The <rule-spec> tells us what packets to match, and what to do with
+them if they do.
+
+There are a number of things that go into a rule specification, and you can
+read lots of details in the man page for iptables.  Here are a few things
+we'll use:
+
+  -p <proto>
+    This specifies the protocol (eg, TCP or UDP) to use. See the
+    manpage for iptables for the values that can be specified.
+
+  -m <match> <match-spec>
+    This specifies more complex matching. You may or may not want
+    to use this.
+
+  -j <target> <target-spec>
+    This specifies the target for a matching packet. That is, what
+    do we do with that packet?
+
+Here's the rule we're going to set:
+
+    sudo iptables -t nat -A POSTROUTING -p tcp --dport 12 -j SNAT --to-source 1.2.3.4
+
+What is this doing? We're matching TCP packets with a destination
+port of 12. Then we're going to apply a source-NAT rule that rewrite
+the source address to 1.2.3.4
+
+Run the nc command again, and see what shows up in wireshark. Pretty
+cool, right? Try changing the 12 to some other value, and see what
+happens. Try connecting to some other IP address on port 12, as
+well. Is this specific to gizmonic or not?
+
+Now, run your iptables list command again. What do you see?
+
+Finally, let's clean things up. We do this with
+
+    sudo iptables -t nat -D POSTROUTING <rule-num>
+
+The last command you ran should tell you what to put for <rule-num>.
+You can verify that you get the expected behavior by running nc to
+port 12 again.
+
+
+Denial-of-Service Exercise 1:
+
+  [NOTE: You'll probably have the most luck with the docker-based
+  method, at least when connected to campus wifi. See the section
+  "ALTERNATIVE METHOD 2", below.]
+
+  We'll build on the spoofing from IP and TCP attacks to look at
+  how we might construct a ping flood while hiding our identity.
+
+  For this, you will require the participation of at least three
+  people in your group. You will each be playing one of the following
+  roles:
+
+    Attacker -- the one doing the attack, which is the hard (but
+                fun!) part
+
+    Victim -- the one having attack traffic directed at them
+
+    Reflector -- an innocent third party, co-opted into participating
+                 in the attack
+
+  The Victim should be someone with Wireshark (or the equivalent)
+  on their laptop, not just their VM. You'll need the IP addresses
+  for the Victim's laptop and the Reflector's laptop. If the
+  Reflector's laptop has Wireshark as well, even better!
+
+  The Attacker should configure iptables to spoof packets as the
+  Victim.  In particular, ICMP Echo Request packets should have the
+  Victim's IP address as the source. Then, the Attacker should send
+  spoofed pings to the Reflector's IP address. You'll probably want
+  to run ping in flooding mode -- see the manpage!
+ 
+  Here's what everyone should see:
+
+    Attacker: ICMP Echo Request packets going out, but no Echo
+              Replies coming back
+
+    Reflector: ICMP Echo Requests coming from the Victim's IP, and
+               Echo Replies going to the Victim
+
+    Victim: ICMP Echo Replies coming in with no corresponding Echo
+            Requests
+
+  ALTERNATIVE METHOD:
+
+    If the Attacker has python on their laptop, try installing
+    pcapy and scapy, if not already present:
+
+      pip install pcapy
+      pip install scapy
+
+   You may need to sudo these. You may also need to install libdnet
+   (https://github.com/dugsong/libdnet) first. Make sure to install
+   it with python support!
+
+   With scapy installed, in python you can do the following:
+
+      from scapy.all import IP,ICMP,send
+      pkt=IP(src=<Victim addr>,dst=<Reflector addr>)/ICMP()
+      send(pkt)
+
+  ALTERNATIVE METHOD 2:
+
+    You can implement this entirely on your VM using docker. To start,
+    run the following (it's already on your VM in ~/gitsrc/testbed):
+
+      git clone git@gitlab.cs.umd.edu:mmarsh/testbed
+
+    This will clone a docker-based testbed. If you go into this directory
+    and run
+
+      ./start_testbed.py
+
+    it will create a network of 4 docker containers, named
+    test0, test1, test2, and test3. These will have IP addresses
+    186.192.0.0-186.192.0.3, all of which are connected together in
+    a mesh.
+
+    These containers make use of something called "network namespaces",
+    the upshot of which is that you can run commands using their network
+    stacks without having to actually run them *in* the container. Here's
+    how we'd run something in test0's namespace:
+
+      sudo ip netns exec test0 ip link
+
+    This will show you all of the network links in the "test0" namespace.
+    If you just run
+
+      ip link
+
+    you'll see how this differs from the default namespace.
+
+    Any command can be run this way. Say test0 is your Victim, and you
+    want to verify that ECHO Replies are reaching it, even though the
+    ECHO Requests came from a different node. You could do this by
+    running
+
+      sudo ip netns exec test0 tcpdump -lU -i any
+
+    If test1 is your Attacker, and you've implemented your attack code
+    in spoof.py, you could run
+
+      sudo ip netns exec test1 ./spoof.py
+
+    You should now see your attack in action. You can run tcpdump in your
+    Attacker and Reflector namespaces, as well, to see all of the traffic.
+
+    When you're done, run
+
+      ./stop_testbed.py
+
+    to kill and remove the testbed nodes, and remove the namespace links
+    from /var/run/netns/.
+
+
+Denial-of-Service Exercise 2:
+
+  Now that we have a way to spoof pings, let's see how we might
+  make this a DDoS attack. Assuming you have more than three people
+  in your group who can participate, you can add more Attackers and
+  more Reflectors, in order to concentrate more traffic on the
+  Victim.  You can just increase the size of your testbed in
+  testbed/example.yml. Is more of one better than more of the other?
+  What seems to limit your ability to flood the Victim?
+

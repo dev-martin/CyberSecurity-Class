@@ -1,0 +1,33 @@
+In this exercise, you will explore chroot jails.
+
+Task 1:
+
+   You will be creating a chroot jail in this task.  Take a look
+   at the make_chroot.sh script.  If you run this, it creates a
+   directory with a chroot jail environment.  You can then put your
+   shell in the jail by going into the chroot directory, and running
+
+      sudo chroot . /bin/sh
+
+   Compare how this behaves to running the above command from
+   somewhere outside of the chroot directory.
+
+   You can exit the jail with the "exit" command.
+
+Task 2:
+
+   In this task, you will be learning how to break out of a chroot
+   jail.  There's a file called unchroot.c and a Makefile.  The
+   Makefile will build this file, and put it into the jail.  Take
+   a look at what this does, and see if you can understand how it
+   is breaking out of the jail.
+
+   Can you make this work from the shell, rather than using the
+   unchroot program?
+
+Task 3:
+
+   How can you make the jail stronger?  What else might you be able
+   to add to it that might make it weaker (that is, would give you
+   more options for escape)?
+

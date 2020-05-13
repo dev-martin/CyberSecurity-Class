@@ -1,0 +1,40 @@
+You are going to create an SP-Network. This will involve defining
+an S-box and a P-box.  You may use any language you like, but C is
+very well-suited to this, and we have provided some skeleton code
+to help you with this, so that you can focus on the boxes themselves.
+
+The block size is 4 bytes, and each S-box operates on 4 bits. This
+means you will need to split the block into 8 sub-blocks for the
+S-boxes. You may use a single S-box for each sub-block, or implement
+multiple S-boxes.
+
+Your submission must contain or build an executable called sp. We
+will run make, and have provided a Makefile that you may modify as
+you like.  If you are using a scripting language, you can delete the
+Makefile, or make it do nothing.
+
+We will invoke your submission as follows (in your submission
+directory):
+
+./sp 1A2B3C4D
+
+The output should be the result of a single round of your SP-Network,
+in the same format, for example:
+
+E53185F2
+
+We don't care about upper-/lower-case and do *not* want a leading
+"0x" -- we know it's in hexadecimal.
+
+What we expect your SP-network to do:
+
+Given a particular input, the same output should always be produced.
+To the best of your ability, try to produce as much confusion and
+diffusion as you can. We will run your network 32 times, and evaluate
+the probability that any given output bit will change with any given
+input bit changed. The target for this is a probability of 0.5, but
+we do not expect you to be able to hit this target. Instead, you must
+satisfy:
+
+  0.15 <= P(flip) <= 0.85
+

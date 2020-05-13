@@ -1,0 +1,70 @@
+This is essentially the contents of the SQL Syntax slides from lecture:
+
+SELECT <columns>
+  Which columns to return, or * for all
+
+FROM <table>
+  Which table to use
+
+WHERE <row predicate>
+  What rows to match
+
+GROUP BY <columns>
+  Combine rows with common values in some columns
+
+ORDER BY <columns>
+  What columns to use when sorting results
+
+=, <>, <, >, >=, <=
+  Standard binary comparators
+
+AND, OR
+  Logical operators
+
+<expr> BETWEEN <min> AND <max>
+  Range selection
+
+<expr> LIKE <pattern>
+  Match a pattern, with % as glob
+
+<expr> IN (<val1>, <val2>, ...)
+  Match one of a set of values
+
+<expr> IS [NOT] NULL|TRUE|FALSE
+  Null or truth testing
+
+SELECT <expr> AS <newcol>
+  Rename a column/expression in the output
+
+;
+  Statement terminator
+
+-- <comment>
+  Comments
+
+AVG(<expr>), COUNT(<expr>)
+  Basic statistics
+
+INSERT INTO <table> [(<col>, ...)] VALUES (<expr>, ...)
+  Add rows to a table (instead of SELECT)
+
+UPDATE <table> SET <col> = <expr> WHERE <pred>
+  Modify exsiting rows (instead of SELECT)
+
+DELETE
+  Remove rows (instead of SELECT)
+
+CASE WHEN <pred1> THEN <expr1> WHEN <pred2> THEN <expr2> ELSE <expr3> END
+  Cascading-if
+
+
+Examples:
+
+  SELECT Email FROM Users WHERE Name="Joel Robinson";
+
+  UPDATE Users SET Email="golden@gizmonic" WHERE DOB="4/1/1988"; -- this is a comment
+
+  INSERT INTO Users Values('Mike Nelson', '10/11/1964', 'mike@gizmonic', ...);
+
+  DROP TABLE Users;
+

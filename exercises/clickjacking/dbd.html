@@ -1,0 +1,23 @@
+<style>
+#victim { /* iframe from the victim site */
+  height:100%; width:100%;
+  position: absolute;
+  top:0; left:0px;
+  opacity: 1.0; /* in real opacity:1 */
+  z-index: 0;
+}
+
+#attack { /* iframe from the attacker */
+  position: absolute;
+  top: 10px; left: 10px;
+  opacity: 0.5; /* in real opacity:0 */
+  z-index: 1;
+};
+</style>
+
+<!-- The url from the victim site -->
+<iframe id="victim" src="http://www.bing.com/"></iframe>
+
+<!-- The url with the attack -->
+<iframe id="attack" frameborder=0 src="./attack.html"></iframe>
+

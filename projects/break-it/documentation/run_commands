@@ -1,0 +1,11 @@
+In one terminal:
+    docker run --rm --name atm_test -ti -v "$(pwd):/opt" baseline
+    cd /opt
+    make
+    ./bin/router&
+    ./bin/bank <f_name_path>
+
+In another terminal:
+docker exec -ti atm_test /bin/bash
+cd /opt
+./bin/atm <f_name_path>

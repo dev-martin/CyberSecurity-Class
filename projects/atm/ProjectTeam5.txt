@@ -1,0 +1,128 @@
+Test 1
+python: can't open file 'init.py': [Errno 2] No such file or directory
+
+>>>>>> init failed to run
+
+Test 2
+Error opening bank initialization file
+
+>>>>>> bank failed to identify invalid command
+
+Test 3
+Error opening bank initialization file
+
+>>>>>> bad username accepted
+
+Test 4
+Error opening bank initialization file
+
+>>>>>> bad pin accepted
+
+Test 5
+Error opening bank initialization file
+
+>>>>>> bad balance accepted
+
+Test 6
+Error opening bank initialization file
+
+>>>>>> could not create user
+
+Test 7
+Error opening bank initialization file
+
+>>>>>> duplicate accepted
+
+Test 8
+Error opening bank initialization file
+
+>>>>>> expected: balance usage
+
+Test 9
+Error opening bank initialization file
+
+>>>>>> expected: no such user
+
+Test 10
+Error opening bank initialization file
+
+>>>>>> expected: balance of carol
+
+Test 11
+Error opening bank initialization file
+
+>>>>>> expected: deposit usage
+
+Test 12
+Error opening bank initialization file
+
+>>>>>> expected: correct deposit
+
+Test 13
+Error opening bank initialization file
+
+>>>>>> expected: too rich for this program
+
+Test 14
+Error opening bank initialization file
+
+>>>>>> expected: invalid command
+
+Test 15
+Error opening bank initialization file
+
+>>>>>> setup failed
+
+Test 16
+Error opening bank initialization file
+
+>>>>>> expected: not logged in
+
+Test 17
+Error opening bank initialization file
+
+>>>>>> expected: unauthorized / no such user
+
+Test 18
+Error opening bank initialization file
+
+>>>>>> could not log in
+
+Test 19
+Error opening bank initialization file
+
+>>>>>> expected: already logged in
+
+Test 20
+Error opening bank initialization file
+
+>>>>>> expected: withdraw usage
+
+Test 21
+Error opening bank initialization file
+
+>>>>>> expected: insufficient funds
+
+Test 22
+Error opening bank initialization file
+
+>>>>>> expected: withdrawal and balance
+
+Test 23
+Error opening bank initialization file
+
+>>>>>> expected: balance usage
+
+Test 24
+Error opening bank initialization file
+
+>>>>>> expected: correct balance
+
+Test 25
+Error opening bank initialization file
+
+>>>>>> expected: user logged out
+
+--------------------
+Score: 0
+--------------------

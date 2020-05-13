@@ -1,0 +1,29 @@
+We're going to take a closer look at how BGP routes propagate
+through a toy network. You've been given a skeleton in bgp.py.
+
+Exercise 1:
+
+  Fill in the skeleton with the update propagation code. The network
+  starts with nearest-neighbor information. Keep longest-prefix
+  matching in mind, though it likely won't be a problem for this
+  first exercise, so you can ignore it in favor of completing the
+  round implementation.
+
+  All decisions at a node should be made purely based on what
+  information it has locally (after a neighbor has passed its latest
+  info to it).
+
+  Update messages can be assumed to be complete routing tables.
+
+  You should print routing tables as they're built.
+
+Exercise 2:
+
+  Pick one AS, and have it advertise a bogus route. You can do this
+  by just adding a new route by hand to its routing table, and
+  running the algorithm as before.
+
+  Try setting a prefix length the same as an existing AS, as well
+  as a more-specific prefix length. See how the behavior differs.
+
+

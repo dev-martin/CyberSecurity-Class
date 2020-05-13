@@ -1,0 +1,4 @@
+<style>
+  p.styled { color: white; background-color: black; }
+</style>
+

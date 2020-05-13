@@ -1,0 +1,167 @@
+Exercise 1:
+
+    cipher1.txt contains a message encrypted with a monoalphabetic
+    cipher. The file frequencies.txt contains n-grams up to 9 with
+    relative occurrences in written English. This information can
+    be used to decrypt cipher1.txt.
+
+    To do this, compute n-gram frequencies (n=1 through 3 may
+    suffice) for the ciphertext, and compare those frequencies with
+    what you were provided. These will give you starting points for
+    your decryption, though it's likely that the frequencies of
+    your ciphertext will not be identical to the large-corpus
+    frequencies. The script ngrams.py implements most of the frequency
+    analysis for you. You can invoke it as:
+
+       ./ngrams.py cipher1.txt
+
+    Note that the monoalphabetic cipher is formed by concatenating
+    a keyword with the remainder of the alphabet, and using these
+    as the replacements for the letters a-z.  For example, a keyword
+    "secrt" ("secret" with the duplicates removed) would generate
+    the cipher:
+
+       plaintext: abcdefghijklmnopqrstuvwxyz
+      ciphertext: secrtabdfghijklmnopquvwxyz
+
+    For your convenience, a script mono_replace.py has been provided to
+    help you work through your candidate substitutions. You can invoke it
+    as:
+
+       ./mono_replace.py cipher1.txt b=a c=b
+
+    to replace a ciphertext 'b' with plaintext 'a' and ciphertext 'c' with
+    plaintext 'b'. You might find this a little easier to keep track of:
+
+       ./mono_replace.py cipher1.txt b=A c=B ' '=''
+
+    for the same substitutions. Please save your translations in a file
+    called key1.txt, and the plaintext in plain1.txt. Note that the provided
+    script isn't necessarily a great way to do this. Feel free to implement
+    your own, possibly taking key1.txt as the substitutions.
+
+
+Exercise 2:
+
+    cipher2.txt contains a Rail-Fence-encrypted message. Here's how
+    a Rail Fence encryption works:
+
+    Start with your plaintext, say "Attack_at_dawn". Now choose an
+    integer k.  This is the key, and gives us the number of "rails"
+    in our fence.  Let's say k=3.  Now we're going to place our
+    plaintext on the rails in a zig-zag pattern, starting at the
+    top rail and working our way down and then back up. For our
+    example, this would look like
+
+      A   c   t   w 
+       t a k a _ a n
+        t   _   d   
+
+    Now we read the rails off, from top to bottom, removing the
+    blanks. This gives us a ciphertext of
+
+      Actwtaka_ant_d
+
+    You've been given two python scripts and a ciphertext to decrypt.
+    The first script is railenc.py, and is a complete, working
+    script. You invoke it as
+
+      ./railenc.py <file> <k>
+
+    Go ahead and create a short text file, and run it through with
+    a couple of different keys, to see how it works. Take a look
+    at the code, as well.
+
+    The second script is raildec.py, which does the decryption.
+    There is one line (near the end) that you will need to modify
+    in order to make it work.  You'll be able to test your decryption
+    using a ciphertext with a known plaintext. It's also invoked
+    as
+
+      ./raildec.py <file> <k>
+
+    Note that this means you'll need to send your ciphertext from
+    railenc.py to a file. If your plaintext is in myplain.txt, and
+    you're using a key of 3, you might run this as
+
+      ./railenc.py myplain.txt 3 > mycipher.txt
+
+    This uses the shell's output redirection operator ">" to send
+    STDOUT to the file mycipher.txt.
+
+    Once you have raildec.py working, try to find the key for
+    cipher2.txt and recover the unknown plaintext.
+
+
+Exercise 3:
+
+    Let's design an S-box! It will probably not be secure, but we
+    won't worry about that.
+  
+    Keeping things simple, let's have 4 bits of input and 4 bits
+    of output. Things to consider:
+     1. Each bit of the input should contribute to every bit of the output.
+     2. Changing an input bit should change roughly half the output bits.
+     3. It must be invertible (perhaps with a different S-box)!
+
+    You can implement this as a simple look-up table, which is easy
+    to do for an S-box this small. The hard part is then coming up
+    with suitable mappings from inputs to outputs. We've provided some
+    code for you in sbox.py, which you can invoke as
+    
+      ./sbox.py "Attack at dawn"
+
+    "man ascii" will show you a table of characters and their hex (and decimal
+    and octal) values. See how 1-bit changes in the input impact the bit of the
+    output, using strings like "@ABDH".
+
+    How might you include a symmetric key to create the full-block
+    substitution step?
+
+Exercise 4:
+
+    Using the hash functions in python's hashlib module (or an equivalent in any
+    other language), create a Feistel cipher.
+
+    In python, the hashlib module has methods like sha1(), sha256(), and
+    sha512(). You can use these, in combination with a key schedule, to create
+    the Feistel cipher's round functions.
+    
+    Recall:
+    P <- ( L_0 , R_0 )
+    L_{i+1} = R_i
+    R_{i+1} = L_i XOR F_i( R_i )
+    C = ( R_{n+1} , L_{n+1} )
+    R_i = L_{i+1}
+    L_i = R_{i+1} XOR F_i( L_{i+1} )
+    P = ( L_0 , R_0 )
+    
+    F_i(x) = H( K_i | x )
+
+    Try to create a Feistel block cipher using one of these hash functions. Make
+    sure you define your block size, and use the hash output appropriately. You
+    should be able to encrypt and decrypt messages using this cipher. ECB mode
+    is fine. To get you started, there's a script feistel.py that you are
+    welcome to use. Can you come up with another way to create a stream cipher
+    from a cryptographic hash function?
+
+Exercise 5:
+
+    Python handles large integers natively, making it a good prototyping
+    environment for simplified cryptosystems. The ** operator does
+    exponentiation. The random module can provide you with random numbers.
+
+    Write a simple program to implement Diffie-Hellman key agreement. You don't
+    need to worry about communicating over the network, just demonstrate that
+    you can create the shared key with each party only knowing its own random
+    number. We've given you a start with dh.py, which takes no arguments.
+
+    Note that you'll need to find a suitable prime number. If you're testing p
+    for primality, keep in mind that you only need to test up to sqrt(p).
+
+    You will also need a generator, which is a number g such that any number
+    modulo p other than 0 can be expressed as g**x for some x.
+    
+    Alice chooses an exponent a, Bob chooses an exponent b -- these are their
+    private keys. They exchange public keys g**a mod p and g**b mod p, and
+    jointly compute g**ab mod p.

@@ -1,0 +1,21 @@
+To solve task1 all you need to do is run decrypt.sh, this uses files:
+	Makefile     --> make decrypt1.
+	ngrams.py    --> fo find keyword, outputs keyword1.txt.
+	decrypt1.c   --> computes plaintext message, takes keyword1.txt and cipher1.txt.
+	keyword1.txt --> contains keyword for cipher1.txt
+	cipher1.txt  --> contains cipher to decrypt.
+	message1.txt --> contains plaintext.
+
+Algorithm I used explained,
+
+1. Find the longest repeated n-grams in the ciphertext, and the distance between each of them.
+2. Uses those distance to find a "common distance" which could end up being the keyword distance, by applying gcd to all distances we can compute that common distance, in this case 4 is obtained.
+3. Arrange all the ciphertext in rows 4 columns, and look for the most common leter for each column.
+4. Letter found for ith column would be ith letter in the keyword but in the ciphertext alphabet.
+5. We want to found keyword in english alphabet. We know most common letter in english is e, so all those most common letters found in ciphertext alphabet should be mapped to e.
+6. English alphabet keyword ith letter is going to be ciphertext aplhabet keyword - e.
+7. Now we have english keyword, each of the letters in cipher is going to be replaced as:
+		
+		plaintext [i] = ciphertext[i] + key[j] ; i[0,len(ciphertext)], j[0,len(key)]
+			if j == len(key) --> j = 0
+			else j++

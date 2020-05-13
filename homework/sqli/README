@@ -1,0 +1,47 @@
+In this exercise, you will implement a server vulnerable to SQL
+injection, a client that exploits this, and a server that has been
+fixed to prevent the injection.  We have provided some tools for
+you to use.
+
+The start_db.sh script will create a docker container running the
+same databases you are attacking in sql-web-attacks, but without a
+corresponding web server. Optionally, you can provide a container
+name to this script, but it is not necessary. Please note: the
+script will indicate an error in mysqladmin -- you may safely ignore
+this error.
+
+There is example code in python, example_server.py and example_client.py.
+If you want to use these, copy them to the required file names. You
+are not obligated to use python, nor are you obligated to use these
+examples should you use python.
+
+We have also included a third-party library, pymysql, to connect
+to the MySQL database from python. You can find the documentation
+at https://pymysql.readthedocs.io/en/latest/index.html
+
+You must provide a bash script named server1.sh that runs your
+vulnerable server, and a bash script named server2.sh that runs
+your non-vulnerable server. A third bash script, client.sh, should
+run your client, connecting to whichever server is currently running.
+The client script should include your attempted SQL injection attack
+hard-coded. If any of your code needs to be compiled, you may either
+add a Makefile or run the compilation in your scripts.
+  
+Your servers should take a username and password as JSON with the
+following format:
+
+    { "user": "bob",
+      "password": "bob's password" }
+
+The client will provide these in an HTML request to the server,
+which will then compose an appropriate query for the database. The
+server should print one of the following:
+
+Successfully logged in as <username>
+
+Failed to log in as <username>
+
+where in the former case, <username> should be replaced with the
+name returned by the database, while in the latter it should be
+replaced with the input from the client.
+

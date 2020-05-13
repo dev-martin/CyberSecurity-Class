@@ -1,0 +1,19 @@
+# Team = ProjectTeam 15
+
+# Vulnerability
+This team's implementation has a vulnerability when logging in as userX. Basically, their implementation is not taking into account how many times userX tries to logg in/inputs a wrong password.
+Since passwords are 4 digit strings containing [0-9] in each digit i, an attacker can go ahead and try for userX all 10^4 possible combinations.
+
+# Attack
+Since they havent taken into account this edge case, they have neither implemented a timer that makes you wait an amount of time between any consecutive wrong passwords attempts. So we have to wait
+no time between putting a password i and putting password i+1 making it very feasable to brute force the password in a short amount of time. However we are lazy and we value our time, therefore we 
+as attackers dont want to waste our time so we go ahead and write a script that goes ahead and tries all possible combinations for us and writes the correct credentials out to a text file.
+
+# How to brute force
+I created a python script called brute_force_pin.py that does what I stated in the attack paragraph. To use it:
+		1) Go to project directory and run make
+		2) Move brute_force_pin.py into bin/
+		3) Once inside of bin/, run: ./router &, ./init secret, ./bank secret.bank .
+		4) Create a user at the bank side for example : create-user martin 1234 1000
+		5) Inside bin/ : python brute_force_pin.py . martin secret
+		6) Let it run and when it prints "ATTACK SUCCESFUL" look inside bin/ for stolen_credentials.txt and in there you will have the credentials for in this case martin

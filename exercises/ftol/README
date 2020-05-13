@@ -1,0 +1,59 @@
+Task 1: A primary "service" with a secondary
+
+  There are two skeleton files, primary.py and secondary.py, to
+  illustrate having a backup service. All they do is print out if
+  they're running every second.
+
+  Your task is to devise a way for the secondary to be activated
+  when the primary fails. You can do this however you like: watch
+  process IDs, use coordination files, open a socket between them,
+  etc. You can either launch both to start with, and have the
+  secondary determine when it's time to run and then relinquish
+  control, or have a third utility monitor the primary and start
+  the secondary when necessary (killing it when it no longer is).
+
+  Bash lets you work with subprocess IDs. The variable "$!" returns
+  the PID of the last-started subprocess, which you might want to
+  run in the background. If you want to keep that value for later,
+  you should assign it to another variable:
+
+    a=$!
+
+  Given a subprocess ID, you can have your script wait until it
+  exits with the "wait <pid>" command, such as:
+
+    wait ${a}
+
+  If you want to have the primary restart automatically, you might
+  find the "sleep" command , and the "$RANDOM" variable useful.
+
+  You may assume crash-stop behavior. If you're feeling ambitious,
+  you may also implement fail-stop behavior in the primary. This
+  should give you an appreciation for why fail-stop isn't more
+  common.
+
+  You may not be able to complete this in class, but it should at
+  least get the gears turning in your head.
+
+Task 2: Quorum systems
+
+  Let's write another toy simulation. Don't worry about all the
+  math.  What's important is that you have some number of processes
+  N, a quorum size Q, and at most T Byzantine faults. You're going
+  to pick values for these, generate random selections of Q processes,
+  and set and read some value.
+
+  A correct process starts with a value of 0. If participating in
+  the write operation, it sets this to 1. A faulty process will
+  always report a value of 2 when participating in a read.
+
+  You can represent processes with a simple array. The Random class
+  in python's random module contains a method "sample" that lets
+  you select a number of elements from a population. We've given
+  you a start in quorum.py, but you'll have to fill in the faulty
+  behavior yourself.
+
+  For reference, given T, we can tolerate this number of Byzantine
+  faults with Q=2T+1, N=3T+1, but don't feel obligated to use these
+  values.
+

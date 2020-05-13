@@ -1,0 +1,16 @@
+"hello"
+Alice
+"company"="dangerous_company"
+"pass"="aaf4c61ddcc5e8a2dabede0f3b482cd9aea9434d"
+"country"="Spain"
+"adress"="dangerous address"
+
+This is the SQL I injected:
+dangerous_company',`pass`='aaf4c61ddcc5e8a2dabede0f3b482cd9aea9434d',
+`country`='Spain',`adress`='dangerous address' WHERE ID = 3 --  
+If we inspect the source code in class.user.php we find the edit function that is called when we hit send in the EDIT menu on collabtive.
+Looking into more detail on that edit function, we can see all parameters are parsed using an escaped-method that makes us imposible to inject any sql by using '. However, there is one mistake in the code since the "company" paramenter is commented out when calling the escaping method. Therefore, we can inject sql into that field in the EDIT menu on collabtive.
+	1. We end the company field by putting any_string+'
+	2. After that since the sql statement is already an UPDATE statement we can start writting any param=value and it will already be updated
+	3. We want to modify bob's info so we need to use his ID, which is 3 --> WHERE ID = 3
+	4. In order to fullfil the logic in the php code we need to also ***change the name on the form from alice to bob***, and we also need to fill in some random email to pass the javascript form-checker.

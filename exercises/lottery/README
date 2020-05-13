@@ -1,0 +1,79 @@
+In this assignment, you will explore vulnerabilities in a simple
+program.
+
+Security Mechanisms
+
+   * The C compiler uses a security mechanism called "Stack Guard",
+     which detects and prevents buffer overflows. We have provided
+     you with a Makefile that compiles your code with this disabled
+     by default.
+
+   * Additionally, the operating system performs address space
+     randomization (ASLR), which does not prevent buffer overflows,
+     but makes it much harder for them to result in a successful
+     exploit. To disable this, run
+
+        sudo sysctl -w kernel.randomize_va_space=0
+
+     This will prompt you for your user password, unless you've
+     configured your VM to allow password-less sudo. The "sudo"
+     command allows a normal user to "do" a single command as the
+     superuser (ie, root) "su". As the root user, you can edit the
+     configuration file for this with the "visudo" command. The
+     configuration file is /etc/sudoers (see the manpage for sudoers).
+
+   * Finally, the bash shell provides some additional defenses. We
+     are going to be exploiting "set-root-uid" executables, which
+     allow a non-root user to perform an action with root privilege.
+     When you run a program, you have a real uid (ruid) and an
+     effective uid (euid). These are usually the same, except when
+     you run a set-root-uid executable, in which case your euid
+     becomes 0 (the root uid).
+
+     If the program exits abnormally, it is unable to reset the
+     euid to the user's ruid. In order to prevent the types of
+     attacks we'll be exploring, bash checks the ruid and euid
+     before spawning a shell. If these differ, it first drops its
+     root privileges, setting euid back to ruid.
+
+     For this reason, we will use the zsh shell in our exploits.
+
+1. Winning the Lottery
+
+   The file lottery.c contains a simple program that picks a random
+   number, and compares it with a value selected by a function that
+   you will write. Your task is to provide us with a version of
+   this function that "wins" the lottery 100% of the time. You do
+   not have to employ buffer overflows, though you certainly may.
+
+   What to do:
+
+      In lottery.c, modify the function your_fcn() as you see fit.
+      You may not modify main(). Hardcoding is allowed in this
+      exercise.
+
+      Success is defined by the program printing "You win!" (plus
+      a newline) as its last line of output.
+
+   We are looking for interesting attacks. There is certainly some
+   low-hanging fruit, but see if your group can come up with other
+   attacks, as well.
+
+2. Format String Vulnerabilities
+
+   The file format.c contains a simple program that takes a string
+   on the command line, and calls printf() using it.  You will not
+   be modifying this file, but you will be exploiting it from the
+   shell.  The main() function calls another function, named vuln(),
+   which takes "secret" arguments that are not known to you, as the
+   attacker.
+
+   What to do:
+
+      Pass an appropriate string that extracts the parameters to
+      the function vuln().
+
+      How might you determine that a program is vulnerable to this
+      sort of attack?
+
+

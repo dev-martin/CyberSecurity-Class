@@ -1,0 +1,19 @@
+nsComment="This is a comment"
+
+[root]
+
+basicConstraints=critical,CA:TRUE
+
+[delegate]
+
+basicConstraints=critical,CA:TRUE,pathlen:0
+
+[server]
+
+# ==> Fill in any other needed attributes <==
+extendedKeyUsage=serverAuth
+
+[client]
+
+# ==> Fill in any other needed attributes <==
+

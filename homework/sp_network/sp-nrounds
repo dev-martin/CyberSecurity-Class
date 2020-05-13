@@ -1,0 +1,11 @@
+#! /bin/bash
+
+input=$1
+n=$2
+
+for i in $(seq 1 $n)
+do
+   input=$(./sp ${input})
+done
+echo ${input}
+

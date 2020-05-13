@@ -1,0 +1,76 @@
+Exercise 1:
+
+   Given a message, we want to find a nonce such that the hash is
+   less than a threshold value, like the Bitcoin proof-of-work. The
+   SHA-1 hash is 160 bits, so you should try thresholds only slightly
+   less than 160. The lower the threshold, the longer it will take
+   to find a nonce that works.
+
+   You should write a program that takes a number and a string on
+   the command line (see the sys.argv array in python -- you'll
+   need to import sys in your script). The number should be the
+   threshold, as a binary exponent, and the string should be the
+   message. The message should be concatenated with a nonce, and
+   your program should try nonces until it finds one that causes
+   the hash to be less than 2**threshold.
+
+   Print the threshold, message, nonce, and hash value to stdout.
+
+   We aren't providing a skeleton for this, since you've seen plenty
+   of examples at this point, from which you can copy code as needed.
+   In addition to sys, you'll probably want to import random.
+
+Exercise 2:
+
+   Bloom filters are very useful in distributed systems, where you
+   might want a small data structure to indicate the presence or
+   absence of items. It's important to understand the potential for
+   false positives when using them, though, since those will impact
+   your assumptions about a system's operation, and we know that
+   incorrect assumptions often lead to vulnerabilities.
+
+   We know how to create a family of hash functions, but we've been
+   using full-length hashes for the most part. Now we want to limit
+   hash outputs to a range [0,n) -- integers greater than or equal
+   to 0 and less than n (ie, 0-based indices for an n-element array).
+
+   Your task is to write a program (or two) to add elements to a
+   Bloom filter and test the filter for element inclusion. You may
+   echo the filter to stdout or store it in a file. Remember that
+   all bits of the filter are initially 0. Bloom filter parameters
+   should either be set by command line parameters or a configuration
+   file (if you're feeling ambitious).
+
+   As a reminder:
+
+     {H_i(x)} is a set of hash functions returning a value between
+     0 and n-1, and i ranges from 1 to k.
+
+     n is the length of the Bloom filter (you can store it as a
+     bitfield or an array of booleans).
+
+     k is the number of bits/values in the Bloom filter to set.
+
+     Storing x means setting the bits corresponding to the {H_i}
+     to 1, while testing for x's inclusion means checking that _all_
+     of the bits corresponding to the {H_i} are 1.
+
+   The following code snippet might be useful to you:
+
+     filter = [False] * n
+     hs = [ (lambda y:
+             lambda x: int(hashlib.sha1(str(y) + str(x)).hexdigest(),16) % n)(a)
+            for a in range(k) ]
+
+   This does a couple of things. The first is to create a list of
+   length n, with each element initialized to False. The second is
+   to create a list of anonymous functions (using lambda), of length
+   k, which ultimately take a value and produce a number in the
+   range [0,n). Look for this in bloom.py
+
+   A Bloom filter eventually becomes "filled", where a large enough
+   number of bits have been set to 1 that any random element has a
+   decent likelihood of returning a false positive. Try different
+   values for n and k, and see how many items you need to add to
+   start seeing a lot of false positives.
+

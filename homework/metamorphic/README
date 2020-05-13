@@ -1,0 +1,25 @@
+In this exercise, you will write a short C program, compile but
+*not* assemble it, and produce three distinct metamorphic transformations
+on the assembly code. You have been provided with a Makefile that
+will produce assembly code from your initial code, and compile your
+variations.
+
+Your program source file should be named base.c, and make will
+produce base.s, containing the assembly. Your three variations
+should be named morph1.s, morph2.s, and morph3.s. All five of these
+files must be added to your repository.
+
+For your program, you may do any (relatively small) task you like.
+The requirements are that it should run fairly quickly (we will
+have to run it four times), require no user input, produce output
+on STDOUT, and run deterministically. That is, every time your
+program is run, the output should be identical. Further, it must
+produce at least 20 characters of output, and contain at least one
+loop or branch. It must be sufficiently complex that the assembly
+file is at least 1500 bytes, as reported by the stat command.
+
+The three metamorphic variations you produce should use *different*
+techniques, though you may reuse some techniques from one "generation"
+to the next, as long as you also add some new technique. These three
+generations should be named morph1.s, morph2.s, and morph3.s.
+

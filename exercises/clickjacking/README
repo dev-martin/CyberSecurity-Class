@@ -1,0 +1,48 @@
+In these exercises you will create clickjacking attacks.
+
+Task 1:
+
+   In this task you will create a drive-by download attack.
+
+   In a Firefox tab, open dbd.html
+
+   Notice that there is an iFrame in dbd.html that has a download
+   link. Currently, the opacity (transparency) is set to 0.5 so you
+   can see it, but for the attack you'll change it to 0 so the
+   victim doesn't know they are performing a download.
+
+   Change other values in the iFrame style or other elements on the
+   page so that the malicious button lines up with an innocuous
+   button on the visible frame.
+
+Task 2:
+
+   In this task you will create an attack that tricks an admin on
+   Collabtive to delete a project by making them think they're
+   clicking on something else.
+
+   1. docker pull gizmonic.cs.umd.edu:8080/sqli
+   2. docker run -d --name clickjack -p 8080:80 gizmonic.cs.umd.edu:8080/sqli
+   3. Go to http://localhost:8080/ (the site used for the sql
+      injection lab) and log into the admin account (password is
+      admin)
+
+   4. In another browser tab, open badsite.html
+
+   Notice that there is an iFrame in badsite.html that shows the
+   Collabtive My Projects page. Currently, the opacity (transparency)
+   is set to 0.5 so you can see it, but for the attack you'll change
+   it to 0 so the victim doesn't know they are clicking on Collabtive.
+   Change other values in the iFrame style or other elements on the
+   page so that the "Click here!" button lines up with the "x"
+   (delete) button for the Users' Account Information project.
+
+   If you make changes to the badsite.html and they aren't reflected
+   when you view the file in your browser, it may be because the
+   browser is showing you a cached version of the file. Refreshing
+   by pressing Shift+Ctrl+R should clear the cache.
+
+   When you're finished, don't forget to run
+
+      docker kill clickjack; docker rm clickjack
+

@@ -1,0 +1,76 @@
+The first thing you'll need to do is implement RSA, albeit an
+insecure version of it.
+
+Python handles large integers natively, making it a good prototyping
+environment for simplified cryptosystems. The ** operator does
+exponentiation. The random module can provide you with random
+numbers.
+
+The first step is to create an RSA key pair for Bob.  Note that
+you'll need to find two suitable prime numbers for each key pair
+you create. If you're testing p for primality, keep in mind that
+you only need to test up to sqrt(p).  Alice will receive the public
+key. Make sure you choose p and q large enough that n supports
+values of at least 1 byte. Don't make it too much longer, because
+you're going to have to determine the private exponent d. This will
+be used to encrypt a symmetric key.
+
+Once you have p, q, n, and e (use 3), you can compute
+
+    phi=(p-1)(q-1)
+
+From this, you need to find d such that
+
+    e*d mod phi = 1
+
+This might take some manual trial-and-error, though you should be
+able to automate it. Make use of code from previous exercises to
+speed things up here.
+
+Now, you'll need a symmetric cipher. A simple 1-byte XOR is sufficient
+for our purposes. Alice will choose the symmetric key, and transmit
+it to Bob, encrypted with his public key.  Verify that you can
+encrypt and decrypt this value with your RSA key pair.
+
+Finally, we bring all of this together by implementing symmetric
+encryption and decryption methods (they might be the same, for XOR).
+Try encrypting a message from Alice and sending it to Bob to decrypt,
+and vice-versa.
+
+You should create files alice and bob, which can be shell scripts,
+python scripts, or compiled programs, as you choose. These can
+generate their private keys on the fly, or read them from files.
+They should produce public key files, so that alice can access Bob's
+public key and bob can access Alice's public key. These don't need
+to be done until you actually need to encrypt something. In python,
+you might find the json module useful:
+
+    import json
+
+    pub_key = ... # some python data structure (list, tuple, dict)
+    with open('alice.pub','w') as f:
+        json.dump(pub_key, f)
+
+    bob_pub_key = None
+    with open('bob.pub') as f:
+        bob_pub_key = json.load(f)
+
+When called as
+
+    alice -e "Attack at dawn" > cipher.txt
+
+the program should output an ASCII-friendly representation of the
+message for Bob (this might be a hex dump), in this case redirected
+to the file cipher.txt.
+
+We could then call
+
+     bob -d $(cat cipher.txt)
+
+or cut and paste the output from encrypting, and the program should
+output the decrypted message.
+
+You have now created a hybrid cryptosystem that uses public-key
+crypto to distribute a secret key, and a secret key to encrypt
+longer messages!
+

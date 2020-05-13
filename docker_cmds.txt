@@ -1,0 +1,4 @@
+" Start a docker container with a directory we want
+	docker run --rm -ti -v <directory_to_mount>:/opt baseline
+" Join an specific container from other terminal
+	docker exec -ti <container_id> bash
